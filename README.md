@@ -32,7 +32,9 @@ Stain-color normalization model can be defined as a generative models that by ap
 <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/P2C25-L4di1Snap3.png> ==> <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/DCGMM_P2C25-L4di1Snap3.png>
 <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/P3C4-L3ma1Snap3.png> ==> <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/DCGMM_P3C4-L3ma1Snap3.png>
 
-## Citation ##
+## Citing DCGMM ##
+If you find DCGMM useful in your research, please consider citing:
+
 <a href="https://openreview.net/pdf?id=SkjdxkhoG">Zanjani, F. G., Zinger, S., Bejnordi, B. E., & van der Laak, J. A. (2018). Histopathology Stain-Color Normalization Using Deep Generative Models.</a>
 
 
