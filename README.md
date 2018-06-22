@@ -32,7 +32,7 @@ Stain-color normalization model can be defined as a generative models that by ap
 <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/P2C25-L4di1Snap3.png> ==> <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/DCGMM_P2C25-L4di1Snap3.png>
 <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/P3C4-L3ma1Snap3.png> ==> <img  width="400" height="350" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/DCGMM_P3C4-L3ma1Snap3.png>
 
-Dataset
+## Dataset ##
 For evaluating the algorithm, <a href="https://camelyon17.grand-challenge.org/">CAMELYON17</a> dataset can be used.
 
 ## Citing DCGMM ##
