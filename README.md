@@ -6,7 +6,7 @@ Deep Convolutional Gaussian Mixture Model for Stain-Color Normalization in Histo
 Stain-color variation degrades the performance of the computer-aided diagnosis (CAD) systems. In the presence of severe color variarion between training set and test set in histopathological images, current CAD systems including deep learning models suffer from such an undesirable effect. Stain-color normalization is known as a remedy.
 
 <p align="center">
-<img  width="600" height="600" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Color_Normalization.png>
+<img  width="600" height="400" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Color_Normalization.png>
 </p>
 
 ## Methodology ##
@@ -18,7 +18,9 @@ Stain-color normalization model can be defined as a generative models that by ap
 * Lack of any threshold and prioir assumption about image contents
 * Considering image content structures for fitting color distribution to image pixels.
 
-<img  width="285" height="285" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Image.png> <img  width="285" height="285" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Classes.png> <img  width="285" height="285" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_DCGMM_Classes.png>
+<p align="center">
+<img  width="200" height="200" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Image.png> <img  width="200" height="200" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Classes.png> <img  width="200" height="200" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_DCGMM_Classes.png>
+</p>  
 *The tissue class membership, computed by the standard GMM algorithm (middle) and the DCGMM (right); Clusters include nuclei (red),  surrounding tissues (green) and the background(blue).*
 
 
