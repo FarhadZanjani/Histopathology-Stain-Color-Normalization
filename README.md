@@ -22,7 +22,7 @@ Stain-color normalization model can be defined as a generative models that by ap
 
 ## How to use the code ##
 ### Prerequisit ###
-* Python 2.7
+* <a href="https://www.python.org">Python 2.7</a>
 * <a href="https://www.tensorflow.org">Tensorflow 1.5.0</a>
 
 ### Configurations ###
