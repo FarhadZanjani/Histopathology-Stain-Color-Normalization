@@ -23,7 +23,7 @@ Stain-color normalization model can be defined as a generative models that by ap
 ## How to use the code ##
 ### Prerequisit ###
 * Python 2.7
-* Tensorflow 
+* <a href="https://www.tensorflow.org">Tensorflow 1.5.0</a>
 
 ### Configurations ###
 1. Specify the dataset diectory containing image patches crpped in predefined with and height. 
