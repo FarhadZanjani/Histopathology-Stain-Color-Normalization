@@ -8,7 +8,16 @@ Stain-color variation degrades the performance of the computer-aided diagnosis (
 ![alt text](https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Color_Normalization.png)
 
 ## Methodology ##
-Stain-color normalization model can be defined as a generative models that by applying on input image can create different color copies of input image to somehow the converted image contain specific chromatic distribution. Our proposed method contains two stage: (1) fitting a Gaussian mixture model (GMM) by considering the shape and apearance of image content structures. To do so the visual representation and modeling of convolutional neyral networks (CNNs) are exploited. (2) transforming the estimated distribution to any arbitary distribution that computed from a secondary (template) image.
+Stain-color normalization model can be defined as a generative models that by applying on input image can create different color copies of input image to somehow the converted image contain specific chromatic distribution. Our proposed method contains two stage: (1) Fitting a Gaussian mixture model (GMM) by considering the shape and apearance of image content structures. To do so the visual representation and modeling of convolutional neyral networks (CNNs) are exploited. (2) transforming the estimated distribution to any arbitary distribution that computed from a secondary (template) image.
+
+## Features ##
+* Fully unsupervised end-to-end learning algorithm
+* Best performance in color constancy in normalized images
+* Lack of any threshold and prioir assumption about image contents
+* Considering image content structures in fitting color distribution to image pixels
+<img  width="200" height="175" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Template.png> 
+.center[**Tissue class membership computed by the CNN**]
+
 
 ## Results ##
 
