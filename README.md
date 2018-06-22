@@ -37,4 +37,9 @@ If you find DCGMM useful in your research, please consider citing:
 
 <a href="https://openreview.net/pdf?id=SkjdxkhoG">Zanjani, F. G., Zinger, S., Bejnordi, B. E., & van der Laak, J. A. (2018). Histopathology Stain-Color Normalization Using Deep Generative Models.</a>
 
+## License ##
+
+## Acknowledgement ##
+This work is a part of 3DPathology project and has been funded by ITEA3 (Grant number: ITEA151003).
+
 
