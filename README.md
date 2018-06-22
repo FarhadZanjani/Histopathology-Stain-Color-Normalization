@@ -18,7 +18,7 @@ Stain-color normalization model can be defined as a generative models that by ap
 
 <img  width="200" height="175" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Image.png> <img  width="200" height="175" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Classes.png> <img  width="200" height="175" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_DCGMM_Classes.png>
 
-**Tissue class membership computed by the CNN**; (red) nucleai; (green) surrounding tissues; (blue) background.
+Tissue class membership, computed by the CNN; (red) nuclei; (green) surrounding tissues; (blue) background.
 
 ## How to use the code ##
 #### Prerequisit ####
