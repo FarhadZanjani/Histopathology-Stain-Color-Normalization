@@ -56,6 +56,6 @@ If you find DCGMM useful in your research, please consider citing:
 Stian-color normalization by using DCGMM is released under the free GNU license.
 
 ## Acknowledgement ##
-This work is a part of 3DPathology project and has been funded by ITEA3 (Grant number: ITEA151003).
+This work was done as a part of 3DPathology project and has been funded by ITEA3 (Grant number: ITEA151003).
 
 
