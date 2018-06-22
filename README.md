@@ -20,6 +20,16 @@ Stain-color normalization model can be defined as a generative models that by ap
 
 **Tissue class membership computed by the CNN**; (red) nucleai; (green) surrounding tissues; (blue) background.
 
+## How to use the code ##
+### Prerequisit ###
+* Python 2.7
+* Tensorflow 
+
+1. Specify the dataset diectory containing image patches crpped in predefined with and height. 
+2. Specify the logging directory for storing the model trained parameters.
+3. Set the mode switch "mode" in train or prediction. [train]: training the DCGMM for learning the color distribution among images. [prediction]: Use the learned model for color conversion.
+
+
 ## Results ##
 
 **Template image**
