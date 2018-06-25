@@ -11,7 +11,6 @@ import scipy.misc as misc
 from model import DCGMM
 from config import get_config
 from Sample_Provider import SampleProvider
-from ops import mkdir
 from ops import image_dist_transform
 
 FLAGS = tf.flags.FLAGS
@@ -31,7 +30,8 @@ def main():
       is_train = False
       
   config = get_config(FLAGS, is_train)
-  mkdir(config.logs_dir)
+  if not os.path.exists(config.logs_dir):
+      os.makedirs(config.logs_dir)
     
   dist = DCGMM(sess, config, "DCGMM", is_train)
   db = SampleProvider("H&E_dataset", config, is_train)
@@ -47,7 +47,8 @@ def main():
         
   elif FLAGS.mode == "prediction":  
     
-      mkdir(config.out_dir)
+      if not os.path.exists(config.out_dir):
+          os.makedirs(config.out_dir)
      
       db_tmpl = SampleProvider("Template_dataset", config, is_train)
       mu_tmpl = 0
