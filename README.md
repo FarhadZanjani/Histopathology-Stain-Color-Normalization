@@ -15,8 +15,8 @@ Stain-color normalization model can be defined as a generative models that by ap
 ## Features ##
 * Fully unsupervised end-to-end learning algorithm
 * Best performance in color constancy in normalized images
-* Lack of any threshold and prioir assumption about image contents
-* Considering image content structures for fitting color distribution to image pixels.
+* Lack of any threshold and prior assumption about the image contents
+* Considering image-content structures for fitting a color distribution to the images.
 
 <p align="center">
 <img  width="250" height="250" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Image.png> <img  width="250" height="250" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_GMM_Classes.png> <img  width="250" height="250" src=https://github.com/FarhadZanjani/Histopathology-Stain-Color-Normalization/blob/master/Images/Example_DCGMM_Classes.png>
