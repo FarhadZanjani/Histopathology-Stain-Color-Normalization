@@ -1,6 +1,6 @@
-## Stain-Color Normalization by using Deep Convolutional GMM (DCGMM)
-## Developer: VCA group, Eindhoen University of Technology
-## Ref: Zanjani, Farhad G., Svitlana Zinger, Babak E. Bejnordi, and Jeroen AWM van der Laak. "Histopathology Stain-Color Normalization Using Deep Generative Models." (2018).
+''' * Stain-Color Normalization by using Deep Convolutional GMM (DCGMM).
+    * VCA group, Eindhoen University of Technology.
+    * Ref: Zanjani F.G., Zinger S., Bejnordi B.E., van der Laak J. AWM, de With P. H.N., "Histopathology Stain-Color Normalization Using Deep Generative Models", (2018).'''
 
 
 import tensorflow as tf
@@ -12,13 +12,14 @@ from model import DCGMM
 from config import get_config
 from Sample_Provider import SampleProvider
 from ops import image_dist_transform
+import ops as utils
 
 FLAGS = tf.flags.FLAGS
 tf.flags.DEFINE_string('mode', "prediction", "Mode train/ prediction")
 tf.flags.DEFINE_string("logs_dir", "./logs_DGMM_HSD/", "path to logs directory")
 tf.flags.DEFINE_string("data_dir", "/media/farhad/DataVolume1/Data/Pathology_Color_Normalization/StainStudy_Dataset/", "path to dataset")
-tf.flags.DEFINE_string("tmpl_dir", "/media/farhad/DataVolume1/Data/Pathology_Color_Normalization/StainStudy_Dataset/Template/", "path to template image(s)")
-tf.flags.DEFINE_string("out_dir", "/media/farhad/DataVolume1/Data/Pathology_Color_Normalization/StainStudy_Dataset/output/", "path to template image(s)")
+tf.flags.DEFINE_string("tmpl_dir", None, "path to template image(s)")
+tf.flags.DEFINE_string("out_dir", None, "path to template image(s)")
 
 
 def main():
@@ -34,15 +35,20 @@ def main():
       os.makedirs(config.logs_dir)
     
   dist = DCGMM(sess, config, "DCGMM", is_train)
-  db = SampleProvider("H&E_dataset", config, is_train)
+  db = SampleProvider("Train_dataset", config.data_dir, config.fileformat, config.image_options, is_train)
   
   if FLAGS.mode == "train":
-    
+      
       for i in range(int(config.iteration)):
         X = db.DrawSample(config.batch_size)
-        loss = dist.fit(X[0])
-        print("iter {:>6d} : {}".format(i+1, loss))
-        if i % 500 == 0:
+        X_hsd = utils.RGB2HSD(X[0]/255.0)
+        loss, summary_str, summary_writer = dist.fit(X_hsd)
+        
+        if i % config.ReportInterval == 0:
+            summary_writer.add_summary(summary_str, i)
+            print("iter {:>6d} : {}".format(i+1, loss))
+            
+        if i % config.SavingInterval == 0:
             dist.saver.save(sess, config.logs_dir+ "model.ckpt", i)
         
   elif FLAGS.mode == "prediction":  
@@ -50,31 +56,52 @@ def main():
       if not os.path.exists(config.out_dir):
           os.makedirs(config.out_dir)
      
-      db_tmpl = SampleProvider("Template_dataset", config, is_train)
+      db_tmpl = SampleProvider("Template_dataset", config.tmpl_dir, config.fileformat, config.image_options, is_train)
       mu_tmpl = 0
       std_tmpl = 0
       N = 0
       while True:
           X = db_tmpl.DrawSample(config.batch_size)
-          if X.size ==0:
+          
+          if len(X) ==0:
               break
           
-          mu, std = dist.deploy(X)
+          X_hsd = utils.RGB2HSD(X[0]/255.0)
+          
+          mu, std, gamma = dist.deploy(X_hsd)
+          mu = np.asarray(mu)
+          mu  = np.swapaxes(mu,1,2)   # -> dim: [ClustrNo x 1 x 3]
+          std = np.asarray(std)
+          std  = np.swapaxes(std,1,2)   # -> dim: [ClustrNo x 1 x 3]
           
           N = N+1
           mu_tmpl  = (N-1)/N * mu_tmpl + 1/N* mu
           std_tmpl  = (N-1)/N * std_tmpl + 1/N* std
-          
+      
+      print("Estimated Mu for template(s):")
+      print(mu_tmpl)
+      
+      print("Estimated Sigma for template(s):")
+      print(std_tmpl)
+      
+      db = SampleProvider("Test_dataset", config.data_dir, config.fileformat, config.image_options, is_train)
       while True:
           X = db.DrawSample(config.batch_size)
-          if X.size ==0:
+          
+          if len(X) ==0:
               break
           
-          mu, std, pi = dist.deploy(X)
+          X_hsd = utils.RGB2HSD(X[0]/255.0)
+          mu, std, pi = dist.deploy(X_hsd)
+          mu = np.asarray(mu)
+          mu  = np.swapaxes(mu,1,2)   # -> dim: [ClustrNo x 1 x 3]
+          std = np.asarray(std)
+          std  = np.swapaxes(std,1,2)   # -> dim: [ClustrNo x 1 x 3]
 
-          X_conv, filename = image_dist_transform(X, mu, std, pi, mu_tmpl, std_tmpl, config.IMAGE_SIZE, config.ClusterNo)
+          X_conv = image_dist_transform(X_hsd, mu, std, pi, mu_tmpl, std_tmpl, config.im_size, config.ClusterNo)
        
-          filename = filename.split('/')[-1]
+          filename = X[1]
+          filename = filename[0].split('/')[-1]
           print(filename)
 
           if not os.path.exists(config.out_dir):

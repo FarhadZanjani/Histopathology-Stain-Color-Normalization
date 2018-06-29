@@ -1,3 +1,7 @@
+''' * Stain-Color Normalization by using Deep Convolutional GMM (DCGMM).
+    * VCA group, Eindhoen University of Technology.
+    * Ref: Zanjani F.G., Zinger S., Bejnordi B.E., van der Laak J. AWM, de With P. H.N., "Histopathology Stain-Color Normalization Using Deep Generative Models", (2018).'''
+
 import tensorflow as tf
 import ops as utils
 from GMM_M_Step import GMM_M_Step
@@ -49,9 +53,7 @@ class CNN(object):
       
     if self.reuse is None:
           self.var_list = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope=self.name)
-          print(self.var_list)
           self.saver = tf.train.Saver(self.var_list)
-          #self.saver = tf.train.Saver()
           self.reuse = True         
 
    
@@ -113,23 +115,19 @@ class DCGMM(object):
     self.name = name
     self.is_train = is_train
 
-    #self.is_train = tf.placeholder(tf.bool, name='phase_train')
-    self.X = tf.placeholder(tf.float32, shape=[config.batch_size, config.im_size, config.im_size, 3], name="original_color_image")
-    self.M_a = tf.placeholder(tf.float32, shape=[1, 3], name="M_a")
-    self.M_b = tf.placeholder(tf.float32, shape=[1, 3], name="M_b")
 
-    self.D, a_b = tf.split(self.X,[1,2], axis=3)
+    self.X_hsd = tf.placeholder(tf.float32, shape=[config.batch_size, config.im_size, config.im_size, 3], name="original_color_image")
+    self.D, h_s = tf.split(self.X_hsd,[1,2], axis=3)
 
     self.E_Step = CNN("E_Step", config, is_train=self.is_train)
     self.Gama = self.E_Step(self.D)
-    self.loss, self.Mu, self.Std = GMM_M_Step(self.X, self.Gama, config.ClusterNo, name='GMM_Statistics')
+    self.loss, self.Mu, self.Std = GMM_M_Step(self.X_hsd, self.Gama, config.ClusterNo, name='GMM_Statistics')
     
     if self.is_train:
 
       self.optim = tf.train.AdamOptimizer(config.lr)
       self.train = self.optim.minimize(self.loss, var_list=self.E_Step.Param)
 
-    X_rgb = utils.HSD2RGB(self.X)
     ClsLbl = tf.arg_max(self.Gama, 3)
     ClsLbl = tf.cast(ClsLbl, tf.float32)
     
@@ -140,9 +138,12 @@ class DCGMM(object):
         ClrTmpl = tf.einsum('anmd,df->anmf', tf.expand_dims(tf.ones_like(ClsLbl), axis=3), tf.reshape(colors[k,...],[1,3]))
         Msk = tf.where(tf.equal(Msk,k), ClrTmpl, Msk)
     
-    tf.summary.image("Softmax_Layer",  Msk, max_outputs=2)
-    tf.summary.image("Original_image", X_rgb*255.0, max_outputs=2)
-    tf.summary.scalar("loss/loss", self.loss)
+    
+    self.X_rgb = utils.HSD2RGB(self.X_hsd)
+    tf.summary.image("1.Input_image", self.X_rgb*255.0, max_outputs=2)
+    tf.summary.image("2.Gamma_image",  Msk, max_outputs=2)
+    tf.summary.image("3.Density_image", self.D*255.0, max_outputs=2)
+    tf.summary.scalar("loss", self.loss)
 
     self.summary_op = tf.summary.merge_all()
 
@@ -158,11 +159,11 @@ class DCGMM(object):
    
 
   def fit(self, X):
-    _, loss, summary_str = self.sess.run([self.train, self.loss, self.summary_op], {self.X:X})
-    return loss
+    _, loss, summary_str = self.sess.run([self.train, self.loss, self.summary_op], {self.X_hsd:X})
+    return loss, summary_str, self.summary_writer
 
   def deploy(self, X):
-    mu, std, gama, summary_str = self.sess.run([self.Mu, self.Std, self.Gama, self.summary_op], {self.X:X})
+    mu, std, gama, summary_str = self.sess.run([self.Mu, self.Std, self.Gama, self.summary_op], {self.X_hsd:X})
     
     return mu, std, gama
     

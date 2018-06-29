@@ -7,14 +7,14 @@ import os
 
 class SampleProvider(object):
   
-  def __init__(self, name, config, is_train):
+  def __init__(self, name, data_dir, fileformat, image_options, is_train):
     self.name = name
     self.is_train = is_train
-    self.path = config.data_dir
-    self.fileformat = config.fileformat
+    self.path = data_dir
+    self.fileformat = fileformat
     self.reset_batch_offset()
     self.files = self._create_image_lists()
-    self.image_options = config.image_options
+    self.image_options = image_options
     self._read_images()
     
   def _create_image_lists(self):
@@ -27,7 +27,6 @@ class SampleProvider(object):
     for filename in find_files(self.path, '*.' + self.fileformat):
         file_list.append(filename)
 
-    print(self.path)
     print ('No. of files: %d' % (len(file_list)))
     return file_list
 
@@ -90,15 +89,11 @@ class SampleProvider(object):
             
         # Finished epoch
         self.epochs_completed += 1
-        print("****************** Epochs completed: " + str(self.epochs_completed) + "******************")
+        print(">> Epochs completed: #" + str(self.epochs_completed))
         # Shuffle the data
-        print(self.images_org.shape)
         perm = np.arange(self.images_org.shape[0], dtype=np.int)
         np.random.shuffle(perm)
         
-        print(len(self.images_org))
-        print(len(self.files))
-        print(self.files[0])
         self.images_org = self.images_org[perm]
         self.files = [self.files[k] for k in perm] 
         

@@ -11,7 +11,7 @@ def RGB2HSD(X):
     D  = np.mean(OD,3)
     D[np.where(D==0.0)] = eps
     
-    cx = OD[:,:,:,0] / (D) - 1
+    cx = OD[:,:,:,0] / (D) - 1.0
     cy = (OD[:,:,:,1]-OD[:,:,:,2]) / (np.sqrt(3.0)*D)
     
     D = np.expand_dims(D,3)
@@ -27,10 +27,6 @@ def HSD2RGB(X_HSD):
     D_R = (X_HSD_1+1) * X_HSD_0
     D_G = 0.5*X_HSD_0*(2-X_HSD_1 + tf.sqrt(tf.constant(3.0))*X_HSD_2)
     D_B = 0.5*X_HSD_0*(2-X_HSD_1 - tf.sqrt(tf.constant(3.0))*X_HSD_2)
-    
-    #D_R  = tf.expand_dims(D_R,3)
-    #D_G  = tf.expand_dims(D_G,3)
-    #D_B  = tf.expand_dims(D_B,3)
     
     X_OD = tf.concat([D_R,D_G,D_B],3)
     X_RGB = 1.0 * tf.exp(-X_OD)
@@ -102,3 +98,17 @@ def conv2d_basic(x, W, bias):
 
 def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding="SAME")
+
+#def RGB2HSD(X):
+#    eps = tf.contrib.keras.backend.epsilon()
+#    X = tf.where(tf.equal(X,0.0), tf.multiply(tf.ones_like(X),eps), X)
+#    OD = tf.negative(tf.log(X))    
+#    D  = tf.reduce_mean(OD,axis=3)
+#    D = tf.where(tf.equal(D,0.0), tf.multiply(tf.ones_like(D),eps), D)
+#    D = tf.expand_dims(D,axis=3)    
+#    OD = tf.split(OD,3,axis=3)
+#    cx = tf.div(OD[0] , D) - 1.0
+#    cy = tf.div( tf.subtract(OD[1],OD[2]) , tf.sqrt(3.0)*D)
+#    
+#    X_hsd = tf.concat([D,cx,cy], axis=3)
+#    return X_hsd
