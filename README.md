@@ -33,7 +33,7 @@ Stain-color normalization model can be defined as a generative models that by ap
 * <a href="https://www.tensorflow.org">TensorFlow 1.5.0</a>
 
 #### Configurations ####
-1. Specify the dataset diectory containing image patches crpped in predefined with and height. 
+1. Specify the dataset diectory containing image patches cropped in predefined with and height. 
 2. Specify the logging directory for storing the model trained parameters.
 3. Set the mode switch "mode" in train or prediction. [train]: training the DCGMM for learning the color distribution among images. [prediction]: Use the learned model for color conversion.
 
